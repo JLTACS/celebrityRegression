@@ -10,7 +10,14 @@ def forward(X,W,b):
     return sigmoid(Z + b)
 
 def cross_entro_error(pY,T):
-    return np.mean(T*np.log(pY) + (1 - T)*np.log(1 - pY)) * -1
+    acu = 0.0
+    for i in range(pY.shape[0]):
+        if T[i] == 1 :
+            acu -= np.log(pY[i])
+        else:
+            acu -= np.log(1-pY[i])
+    return acu
+    #return -1*np.mean(T*np.log(pY) + (1 - T)*np.log(1 - pY)) 
 
 def classification_rate(Y,P):
     return np.mean(Y == P)
@@ -26,13 +33,16 @@ def training(X,Y):
     print("Ingrese las épocas: ")
     ages = int(input())
 
+    lamb = 0.9
+
     for i in range(ages):
         pYtrain = forward(X,W,b)
+       # print(W)
         train_costs.append(cross_entro_error(pYtrain,Y))
 
         #gradient descent
-        W -= lr * X.T.dot((pYtrain-Y))
-        b -= lr * (pYtrain-Y).sum()
+        W -= lr * (X.T.dot((pYtrain-Y)) + lamb*W)
+        b -= lr * ((pYtrain-Y).sum() + lamb*b)
     
     print("Final train classification_rate:", classification_rate(Y, np.round(pYtrain)))
     
