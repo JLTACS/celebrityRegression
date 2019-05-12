@@ -30,7 +30,8 @@ def training(X, Y, lr, ages):
 
     lr = lr
     ages = ages
-    lamb = 0.9
+    lamb = 0.1
+    l1 = 5.0
 
     for i in range(ages):
         pYtrain = forward(X,W,b)
@@ -38,8 +39,8 @@ def training(X, Y, lr, ages):
         #train_costs.append(cross_entro_error(pYtrain,Y))
 
         #gradient descent
-        W -= lr * (X.T.dot((pYtrain-Y)) + lamb*W)
-        b -= lr * ((pYtrain-Y).sum() + lamb*b)
+        W -= lr * (X.T.dot((pYtrain-Y)) + lamb*W + l1*np.sign(W))
+        b -= lr * ((pYtrain-Y).sum() + lamb*b + l1*np.sign(b))
     
     #print("Final train classification_rate:", classification_rate(Y, np.round(pYtrain)))
     
