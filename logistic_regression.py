@@ -22,29 +22,26 @@ def cross_entro_error(pY,T):
 def classification_rate(Y,P):
     return np.mean(Y == P)
 
-def training(X,Y):
+def training(X, Y, lr, ages):
     D = X.shape[1]
     W = np.random.randn(D)
     b = 0
     train_costs = []
 
-    print("Ingrese el Learning Rate: ")
-    lr = float(input())
-    print("Ingrese las épocas: ")
-    ages = int(input())
-
+    lr = lr
+    ages = ages
     lamb = 0.9
 
     for i in range(ages):
         pYtrain = forward(X,W,b)
        # print(W)
-        train_costs.append(cross_entro_error(pYtrain,Y))
+        #train_costs.append(cross_entro_error(pYtrain,Y))
 
         #gradient descent
         W -= lr * (X.T.dot((pYtrain-Y)) + lamb*W)
         b -= lr * ((pYtrain-Y).sum() + lamb*b)
     
-    print("Final train classification_rate:", classification_rate(Y, np.round(pYtrain)))
+    #print("Final train classification_rate:", classification_rate(Y, np.round(pYtrain)))
     
     return W,b,train_costs
 
@@ -52,5 +49,5 @@ def training(X,Y):
 def logistic_regression(xtest,ytest,W,b): 
 
     pYtest = np.round(forward(xtest,W,b))
-    print("Final test classification_rate:", classification_rate(ytest, pYtest))
-    return pYtest
+    #print("Final test classification_rate:", classification_rate(ytest, pYtest))
+    return pYtest, classification_rate(ytest, pYtest)
