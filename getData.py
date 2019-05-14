@@ -12,7 +12,7 @@ def prepareData():
     df_filter.insert(cols   ,'Attractive',rt)
     return df_filter
 
-print(prepareData())
+
 
 def separateTrainTest(data, train):
     df_train = pd.DataFrame(columns = data.columns)
